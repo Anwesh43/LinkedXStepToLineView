@@ -97,4 +97,48 @@ class XStepToLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class XSTLNode(var i : Int, val state : State = State()) {
+
+        private var next : XSTLNode? = null
+        private var prev : XSTLNode? = null
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawXSTLNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = XSTLNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            state.update {
+                cb(i, it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : XSTLNode {
+            var curr : XSTLNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
