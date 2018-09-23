@@ -17,7 +17,7 @@ val nodes : Int = 5
 fun Canvas.drawXSTLNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
-    val gap : Float = w / (nodes + 1)
+    val gap : Float = h / (nodes + 1)
     val size : Float = gap / 3
     paint.strokeWidth = Math.min(w, h) / 60
     paint.strokeCap = Paint.Cap.ROUND
@@ -28,7 +28,7 @@ fun Canvas.drawXSTLNode(i : Int, scale : Float, paint : Paint) {
         val sf : Float = 1f - 2 * (j % 2)
         val sc : Float = Math.min(0.5f, Math.max(0f, scale - j * 0.5f)) * 2
         save()
-        rotate(45f * sf * (1 - sc))
+        rotate(60f * sf * (1 - sc))
         drawLine(0f, -size, 0f, size, paint)
         restore()
     }
@@ -145,11 +145,12 @@ class XStepToLineView(ctx : Context) : View(ctx) {
     }
 
     data class XStepToLine(var i : Int) {
-        private var curr : XSTLNode = XSTLNode(0)
+        private var root : XSTLNode = XSTLNode(0)
+        private var curr : XSTLNode = root
         private var dir : Int = 1
 
         fun draw(canvas : Canvas, paint : Paint) {
-            curr.draw(canvas, paint)
+            root.draw(canvas, paint)
         }
 
         fun update(cb : (Int, Float) -> Unit) {
