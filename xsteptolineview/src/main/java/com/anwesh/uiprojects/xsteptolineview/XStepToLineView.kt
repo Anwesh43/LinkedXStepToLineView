@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.xsteptolineview
  * Created by anweshmishra on 23/09/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.graphics.Canvas
@@ -183,6 +184,13 @@ class XStepToLineView(ctx : Context) : View(ctx) {
             xstl.startUpdating {
                 animator.start()
             }
+        }
+    }
+    companion object {
+        fun create(activity : Activity) : XStepToLineView {
+            val view : XStepToLineView = XStepToLineView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
