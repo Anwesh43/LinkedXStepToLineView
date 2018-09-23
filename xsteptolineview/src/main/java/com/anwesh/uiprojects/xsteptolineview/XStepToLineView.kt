@@ -163,4 +163,25 @@ class XStepToLineView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : XStepToLineView) {
+        private val xstl : XStepToLine = XStepToLine(0)
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            xstl.draw(canvas, paint)
+            animator.animate {
+                xstl.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            xstl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
